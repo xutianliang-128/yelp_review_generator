@@ -1,0 +1,14 @@
+cassandra-driver
+pandas
+scikit-learn
+boto3
+pypyr
+python-dotenv
+fastapi
+uvicorn
+gunicorn
+keytotext
+transformers
+opencv-python
+python-multipart
+jinja2

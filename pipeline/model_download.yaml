@@ -1,0 +1,36 @@
+context_parser: pypyr.parser.keyvaluepairs
+steps:
+  - name: pypyr.steps.contextsetf
+    comment: set some arbitrary values in context
+    in:
+      contextSetf:
+        dest_dir: models
+  - name: pypyr.steps.py
+    comment: Run python code to download the above file keys.
+    in:
+      py: |
+          import os
+          import pathlib
+          import boto3
+          from dotenv import load_dotenv
+          load_dotenv()
+
+          session = boto3.session.Session()
+          bucket_name = os.environ.get('BUCKET_NAME')
+          region_name = os.environ.get('REGION')
+          endpoint_url = os.environ.get('ENDPOINT') or None
+          if not os.environ.get('AWS_ACCESS_KEY_ID') or not os.environ.get('AWS_SECRET_ACCESS_KEY'):
+            raise Exception("AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are required environment variables.")
+          if not bucket_name or not region_name:
+            raise Exception("BUCKET_NAME and REGION_NAME are required environment variables.")
+
+          def downloadBucket(bucket_name, local_dir):
+            s3 = boto3.resource('s3')
+            my_bucket = s3.Bucket(bucket_name)
+            os.makedirs(local_dir, exist_ok=True)
+            for s3_object in my_bucket.objects.all():
+              # Need to split s3_object.key into path and file name, else it will give error file not found.
+              path, filename = os.path.split(s3_object.key)
+              my_bucket.download_file(s3_object.key, os.path.join(local_dir, filename))
+
+          downloadBucket(bucket_name, dest_dir)

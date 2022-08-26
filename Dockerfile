@@ -13,7 +13,7 @@ WORKDIR /app
 
 RUN chmod +x entrypoint.sh
 
-RUN python3 -m venv /opt/venv && /opt/venv/bin/python -m pip install --upgrade pip && /opt/venv/bin/python -m pip install -r requirements.txt
+RUN python3 -m venv /opt/venv && /opt/venv/bin/python -m pip install --upgrade pip && /opt/venv/bin/python -m pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update && \
     apt-get autoremove -y && \

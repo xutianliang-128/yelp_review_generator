@@ -1,6 +1,7 @@
 cassandra-driver
 pandas
 scikit-learn
+torch --no-cache-dir
 boto3
 pypyr
 python-dotenv

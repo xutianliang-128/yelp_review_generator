@@ -149,3 +149,9 @@ async def handle_form(request: Request, food1: str = Form(), food2: str = Form()
 
 if __name__ == "__main__":
     os.system("uvicorn main: app")
+
+
+# docker run --expose 8000 -it test_docker
+# docker run -p 0.0.0.0:2022:8000/tcp -it test_docker
+# ps to find the running process
+# kill -9 PID
